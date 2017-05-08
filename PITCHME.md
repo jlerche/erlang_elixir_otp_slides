@@ -1,7 +1,7 @@
 Erlang, Elixir, BEAM, and OTP
 ---
 
-# Introduction foo
+# Introduction f
 * Erlang is a functional programming language
 ---
 The end!
