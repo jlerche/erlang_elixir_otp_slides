@@ -17,3 +17,13 @@ Erlang, Elixir, BEAM, and OTP
   - Software must be changeable on the fly
   - A network must be able to tolerate failure of individual switches
 * Soft real-time guarantees
+---
+#### High level implementation
+* Model as finite state machines that undergo state transitions in response to protocol messages
+* An FSM is a lightweight process in memory
+* Most processes waiting until event triggers state transition
+* Upon receipt, execute small amount of code
+  - Change state
+  - Send message
+  - Wait for next event
+* One process should not be able to crash the system, or affect other processes
