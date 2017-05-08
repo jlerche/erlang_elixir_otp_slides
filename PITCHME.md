@@ -8,7 +8,7 @@ Erlang, Elixir, BEAM, and OTP
 * AXD301 switch with 1.7 million lines of Erlang code
   - Reported 99.9999999% availability (~31 ms downtime per year)
 ---
-# Telephony requirements for Erlang
+#### Telephony requirements for Erlang
 * Telecom applications are highly concurrent by nature
   - A single switch handles 10s to 100s of thousands of simultaneous transactions
 * Switching networks are distributed
