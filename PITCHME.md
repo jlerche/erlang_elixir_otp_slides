@@ -27,3 +27,27 @@ Erlang, Elixir, BEAM, and OTP
   - Send message
   - Wait for next event
 * One process should not be able to crash the system, or affect other processes
+---
+#### BEAM Architecture
+* Schedulers
+* Processes
+* Memory management
+* Message passing
+---
+#### BEAM: Schedulers
+* BEAM has a thread per logical core
+* 1 thread = 1 scheduler
+* Periodically (20-40k reductions) a master scheduler is chosen
+  - Does internal load balancing to utilize all cores efficiently
+---
+#### BEAM: Schedulers
+* A scheduler is a set of 3/4 priority queues
+  - Critical, high, normal, low
+* Queues are implemented as work stealing deques
+* An executing process runs for 2k reductions before being rescheduled
+---
+#### BEAM: Processes
+![Javascript has ninjas, Erlang has necromancers](memes/process_necromancer.jpg)
+---
+#### BEAM: Processes
+* Completely isolated, independent unit of execution
