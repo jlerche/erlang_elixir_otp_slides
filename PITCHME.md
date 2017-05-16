@@ -59,3 +59,9 @@ Erlang, Elixir, BEAM, OTP, and Phoenix
 * Two closest languages/frameworks are Go and Akka
   - Go can't pre-empt inside of loops
   - Akka uses a cooperative scheduler
+---
+#### Elixir: History
+* First released in 2011
+* Created by José Valim who was heavily involved in the Ruby and Rails community
+* Inspired by his difficulties making Rails more concurrent
+* The language takes a strong inspiration from Ruby for syntax, and Lisp for structure
