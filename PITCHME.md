@@ -1,4 +1,4 @@
-Erlang, Elixir, BEAM, and OTP
+Erlang, Elixir, BEAM, OTP, and Phoenix
 ---
 
 # Introduction
@@ -31,8 +31,7 @@ Erlang, Elixir, BEAM, and OTP
 #### BEAM Architecture
 * Schedulers
 * Processes
-* Memory management
-* Message passing
+* Distribution
 ---
 #### BEAM: Schedulers
 * BEAM has a thread per logical core
@@ -42,12 +41,21 @@ Erlang, Elixir, BEAM, and OTP
 ---
 #### BEAM: Schedulers
 * A scheduler is a set of 3/4 priority queues
-  - Critical, high, normal, low
+  - Max , high, normal, low
 * Queues are implemented as work stealing deques
 * An executing process runs for 2k reductions before being rescheduled
+  - 2k reductions < ~1ms
 ---
 #### BEAM: Processes
 ![Javascript has ninjas, Erlang has necromancers](memes/process_necromancer.jpg)
 ---
 #### BEAM: Processes
 * Completely isolated, independent unit of execution
+* Have their own stack and heap
+* Communicate via message passing
+  - This means that data is copied when passed
+---
+# Processes are fully pre-emptive
+* Two closest languages/frameworks are Go and Akka
+  - Go can't pre-empt inside of loops
+  - Akka uses a cooperative scheduler
