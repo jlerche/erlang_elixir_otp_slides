@@ -141,6 +141,7 @@ iex> a = 1
 iex> 1 = a
 1
 ```
+---
 #### Pattern matching
 ```elixir
 iex> [1, a, 3] = [1, 2, 3]
