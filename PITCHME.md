@@ -67,18 +67,23 @@ Erlang, Elixir, BEAM, OTP, and Phoenix
   - Go can't pre-empt inside of loops
   - Akka uses a cooperative scheduler
 ---
-#### Elixir: History
+#### Elixir History
 * First released in 2011
 * Created by José Valim who was heavily involved in the Ruby and Rails community
 * Inspired by his difficulties making Rails more concurrent
-* The language takes a strong inspiration from Ruby for syntax, and Lisp for structure
+
+---
+# Elixir Philosophy
+Concurrent programming should not be difficult
+---
+#### Elixir Overview
+* Takes a strong inspiration from Ruby for syntax, and Lisp for structure
   - Syntax is not homoiconic on the surface
   - But elixir allows quoting and exposes its AST for macros
 * Dynamically typed, functional language, immutable data structures
 * Like JVM languages, can call Erlang libraries with no penalty
----
-# Elixir Philosophy
-Concurrent programming should not be difficult
+* Polymorphism via dynamic dispatch
+* No loops, only recursion
 ---
 #### Value types
 * Integers
