@@ -163,3 +163,62 @@ iex> [a, _, _] = [1, 2, 3]
 iex> a
 1
 ```
+---
+#### Pattern matching
+Match on previously bound value with pin operator `^`
+```elixir
+iex> a =1
+1
+iex> [^a, 2, 3] = [1, 2, 3]
+[1, 2, 3]
+```
+---
+#### Pattern matching
+We can pattern match in function signatures
+```elixir
+defmodule Factorial do
+  def fac(0), do: 1
+  def fac(x), do: x * fac(x-1)
+end
+```
+---
+#### Guards
+Can specify conditions on the arguments
+```elixir
+defmodule Factorial do
+  def fac(0), do: 1
+  def fac(n) when n > 0 do
+    n * fac(n-1)
+  end
+end
+```
+---
+#### Conditionals
+* Erlang has no `if`
+* Elixir has `if`, `else`, and `unless` implemented as a macro
+* These macros rely on `case` which uses patter matching
+---
+#### Case
+```elixir
+iex> case {1, 2, 3} do
+...>   {4, 5, 6} ->
+...>     "This clause won't match"
+...>   {1, x, 3} ->
+...>     "This clause will match and bind x to 2 in this clause"
+...>   _ ->
+...>     "This clause would match any value"
+...> end
+"This clause will match and bind x to 2 in this clause"
+```
+---
+#### Case with guards
+```elixir
+iex> case {1, 2, 3} do
+...>   {1, x, 3} when x > 0 ->
+...>     "Will match"
+...>   _ ->
+...>     "Would match, if guard condition were not satisfied"
+...> end
+"Will match"
+```
+---
