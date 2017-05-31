@@ -247,6 +247,7 @@ defmodule RecursionTCO do
   end
 end
 ```
+---
 #### Processes
 ```elixir
 iex> pid = spawn fn -> 1 + 1 end
