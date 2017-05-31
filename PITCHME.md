@@ -247,3 +247,43 @@ defmodule RecursionTCO do
   end
 end
 ```
+#### Processes
+```elixir
+iex> pid = spawn fn -> 1 + 1 end
+PID<0.43.0>
+iex> Process.alive?(pid)
+false
+```
+`spawn/1` takes a function and returns a pid.
+---
+#### Processes
+We can retrieve the PID of the current process with `self/0`
+```elixir
+iex> self()
+PID<0.41.0>
+iex> Process.alive?(self())
+true
+```
+---
+#### Send and receive
+```elixir
+iex> send self(), {:hello, "world"}
+{:hello, "world"}
+iex> receive do
+...>   {:hello, msg} -> msg
+...>   {:world, msg} -> "won't match"
+...> end
+"world"
+```
+---
+#### Sending between processes
+```elixir
+iex> parent = self()
+PID<0.41.0>
+iex> spawn fn -> send(parent, {:hello, self()}) end
+PID<0.48.0>
+iex> receive do
+...>   {:hello, pid} -> "Got hello from #{inspect pid}"
+...> end
+"Got hello from PID<0.48.0>"
+```
