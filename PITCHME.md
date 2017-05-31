@@ -222,3 +222,28 @@ iex> case {1, 2, 3} do
 "Will match"
 ```
 ---
+#### Recursion
+```elixir
+defmodule Recursion do
+  def map([head|tail], f) do
+     [f.(head)|map(tail, f)]
+  end
+end
+```
+---
+#### Recursion: Tail call optimization
+```elixir
+defmodule RecursionTCO do
+  def map(list, f) do
+     p_map(list, f, [])
+  end
+
+  defp p_map([], _, acc) do
+    Enum.reverse(acc)
+  end
+
+  defp p_map([head|tail], f, acc) do
+    p_map(tail, f, [f.(head)|acc])
+  end
+end
+```
