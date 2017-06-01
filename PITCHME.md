@@ -288,3 +288,16 @@ iex> receive do
 ...> end
 "Got hello from PID<0.48.0>"
 ```
+---
+# Processes are the fundamental unit of concurrency
+---
+A process can be used for:
+  * Holding state to be shared with other processes
+  * Executing code in parallel/concurrently
+  * Maintaining pools of other processes
+---
+In order to do any of that, we need the process to stick around
+---
+But how to do that?
+
+<img src="./memes/thinking-face.png" />
