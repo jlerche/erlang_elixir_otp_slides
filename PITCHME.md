@@ -304,3 +304,41 @@ But how to do that?
 ---
 <img src="./memes/elmo_recursion.png" />
 ---
+```elixir
+defmodule Infinite.Process do
+  def loop do
+    receive do
+      {sender_pid, :hello} ->
+        send sender_pid, "world"
+        loop
+      {sender_pid, _} when is_pid(sender_pid) ->
+        send sender_pid, :error
+        loop
+      _ ->
+        loop
+    end
+  end
+end
+```
+---
+```elixir
+iex> pid = spawn(Infinite.Process, :loop, [])
+PID<0.89.0>
+iex> send(pid, {self(), :hello})
+{PID<0.81.0>, :hello}
+iex> flush()
+"world"
+:ok
+iex> send(pid, {self(), :foo})
+{PID<0.81.0>, :foo}
+iex> flush()
+:error
+:ok
+```
+---
+This is such a common design pattern that Erlang provides an abstraction for it, and others, in a common library
+---
+# OTP
+* GenServer
+* Supervisor
+* Application
