@@ -301,3 +301,6 @@ In order to do any of that, we need the process to stick around
 But how to do that?
 
 <img src="./memes/thinking-face.png" />
+---
+<img src="./memes/elmo_recursion.png" />
+---
