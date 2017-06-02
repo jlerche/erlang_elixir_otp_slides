@@ -339,6 +339,32 @@ iex> flush()
 This is such a common design pattern that Erlang provides an abstraction for it, and others, in a common library
 ---
 # OTP
+---
+* With a message passing model, accessing data is not straightforward
+* Requires sending a message to a process
+* Message must respect an interface provided by the process
+* Then wait for reply, or don't
+---
+This sounds suspiciously like a client-server interaction
+---
+OTP provides the following, among others:
 * GenServer
 * Supervisor
 * Application
+* ETS
+---
+#### GenServer
+Client-server model is used for resource management where several clients want to share a common resource
+* Some kind of data, aka state
+* Trigger a task or function
+---
+```elixir
+defmodule SimpleQueue do
+  use GenServer
+  def start_link(state \\ []) do
+    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+  end
+
+  def init(state), do: {:ok, state}
+end
+```
