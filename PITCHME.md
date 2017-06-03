@@ -358,13 +358,26 @@ Client-server model is used for resource management where several clients want t
 * Some kind of data, aka state
 * Trigger a task or function
 ---
+* The various abstractions in OTP are called behaviours
+* Essentially an interface with required functions to be implemented
+* GenServer has 6 required callbacks
+* The `use GenServer` macro expands and provides convenient default implementations
+---
+* The most used callbacks are `handle_call` and `handle_cast`
+* `handle_call` is synchronous
+  - Sends a message and blocks until reply
+  - Must reply with a tuple like `{:reply, response, state}`
+* `handle_cast` is asynchronous
+  - Fire and forget
+  - Replies with `{:noreply, state}`
+* Both have the genserver's `state` as arguments
+---
 ```elixir
-defmodule SimpleQueue do
+defmodule Stack do
   use GenServer
-  def start_link(state \\ []) do
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
-  end
 
-  def init(state), do: {:ok, state}
+  def handle_call(:pop, _from, [h|t]) do
+    {:reply, h, t}
+  end
 end
 ```
