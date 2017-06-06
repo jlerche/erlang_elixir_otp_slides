@@ -308,7 +308,7 @@ But how to do that?
 defmodule Infinite.Process do
   def loop do
     receive do
-      {sender_pid, :hello} ->
+      {sender_pid, :hello} when is_pid(sender_pid) ->
         send sender_pid, "world"
         loop
       {sender_pid, _} when is_pid(sender_pid) ->
@@ -379,5 +379,55 @@ defmodule Stack do
   def handle_call(:pop, _from, [h|t]) do
     {:reply, h, t}
   end
+
+  def handle_cast({:push, item}, state) do
+    {:noreply, [item | state]}
+  end
 end
 ```
+---
+```elixir
+iex> {:ok, pid} = GenServer.start_link(Stack, [:hello])
+{:ok, PID<0.88.0>}
+iex> GenServer.call(pid, :pop)
+:hello
+iex> GenServer.cast(pid, {:push, :world})
+:ok
+iex> GenServer.call(pid, :pop)           
+:world
+```
+---
+* This is nice, but a little unwieldy
+* It's common practice to implement an API for processes to use when they want to make a call
+* This could look something like the following
+---
+```elixir
+def start_link(initial_state) do
+  GenServer.start_link(__MODULE__, initial_state)
+end
+
+def push(pid, item) do
+  GenServer.cast(pid, {:push, item})
+end
+
+def pop(pid) do
+  GenServer.call(pid, :pop)
+end
+```
+---
+## Note:
+* `__MODULE__` returns the name of the current module.
+* `cast` doesn't guarantee the server received the message
+* `handle_info` callback is for handling messages not sent via `GenServer.call`or `GenServer.cast`
+---
+#### A brief interlude on bugs, exceptions, etc
+* Processes are completely isolated and share nothing
+* When a process ends, its memory is reclaimed by the VM
+* If code in a process causes an exception, it doesn't affect the rest of the code running in the VM
+* Processes can send messages upon exiting
+* It's not surprising then that a common meme in the Erlang world is "Let it crash"
+---
+* Does _not_ mean that errors aren't ever handled
+* But with pattern matching and message passing, you can be pretty confident that your code is running what you expect
+* If not, kill the process and let the calling process handle the `:kill` message
+* Process isolation is for handling side effects
