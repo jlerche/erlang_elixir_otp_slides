@@ -431,3 +431,31 @@ end
 * But with pattern matching and message passing, you can be pretty confident that your code is running what you expect
 * If not, kill the process and let the calling process handle the `:kill` message
 * Process isolation is for handling side effects
+---
+# Supervisors
+---
+#### Supervisors
+* Specialized processes for monitoring other processes
+* Register a list of child processes
+* Can restart or stop any of its child processes
+* Child processes implement OTP behaviours
+* Can register a supervisor as a child
+* Leads to supervision trees
+---
+```elixir
+import Supervisor.Spec
+
+children = [
+  worker(Stack, [], [name: MyStack])
+]
+```
+then in `iex`
+```elixir
+{:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
+```
+---
+#### Supervisor strategies
+* `:one_for_one`: only restart failed child process
+* `:one_for_all`: restart all child processes in event of a failure
+* `:rest_for_one`: restart failed process and any process started after it
+* `:simple_one_for_one`: for dynamically spawned children. Supervisor has one child 'template' that other spawned processes base off of
