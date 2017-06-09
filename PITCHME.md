@@ -441,6 +441,7 @@ end
 * Child processes implement OTP behaviours
 * Can register a supervisor as a child
 * Leads to supervision trees
+  - Just swap `worker` for `supervisor`
 ---
 ```elixir
 import Supervisor.Spec
@@ -459,3 +460,27 @@ then in `iex`
 * `:one_for_all`: restart all child processes in event of a failure
 * `:rest_for_one`: restart failed process and any process started after it
 * `:simple_one_for_one`: for dynamically spawned children. Supervisor has one child 'template' that other spawned processes base off of
+---
+#### Restart values
+* `:permanent`: child is always restarted - default
+* `:temporary`: child is never restarted
+* `:transient`: child is restarted only if abnormal termination
+---
+# Applications
+---
+An application is a component implementing some specific functionality, that can be started and stopped as a unit, and which can be re-used in other system.
+---
+In practice, this is usually a supervision tree with various genserver and supervisor children.
+---
+```elixir
+defmodule MyApp do
+  use Application
+
+  def start(_type, _args) do
+    MyApp.Supervisor.start_link()
+  end
+end
+```
+
+Can also define a `stop` callback
+---
