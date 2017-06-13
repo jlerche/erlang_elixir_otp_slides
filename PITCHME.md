@@ -484,3 +484,25 @@ end
 
 Can also define a `stop` callback
 ---
+Can include the application in the project dependencies and have it started on load.
+---
+ETS
+---
+#### ETS
+* Erlang Term Storage
+* Robust in-memory store for erlang types
+* Organized by tables, which are owned by processes
+---
+#### Tables types
+* `set`: one value per key, keys are unique. default table type
+* `ordered_set`: Similar to `set` but ordered by term
+* `bag`: many objects per key, but only one instance of each object per key
+* `duplicate_bag`: many objects per key, duplicates allowed
+---
+# ETS tables are accessible by any process
+
+# ETS doesn't have transactions
+---
+* Therefore, allowing reads from any process is fine, but writes should be done through the controlling process
+
+* If transactions and more robust features are needed, then Mnesia offers that, and ships with the Erlang runtime
