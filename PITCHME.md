@@ -506,3 +506,58 @@ ETS
 * Therefore, allowing reads from any process is fine, but writes should be done through the controlling process
 
 * If transactions and more robust features are needed, then Mnesia offers that, and ships with the Erlang runtime
+---
+Phoenix
+---
+#### Phoenix
+* Web MVC framework (though slightly changing in upcoming release)
+* Layer built on top of a set of modules
+  - Cowboy: the webserver, included as project dependency
+  - Plug: specification for web application components and adapters for web servers
+    - Like Rack/Sinatra for ruby or `net/http` for go, kinda
+  - Ecto: database wrapper and provides integrated query language
+---
+#### Phoenix logical components
+* The Endpoint
+* The Router
+* Controllers
+* Views
+* Templates
+* Channels
+* PubSub
+---
+#### Endpoint
+* Handles all aspects of requests up until the point where the router takes over
+* Provides core set of plugs to apply to all requests
+* Dispatches requests into designated router
+---
+#### Router
+* Parses incoming requests and dispatches to controller
+* Provides helpers to generate route paths or urls to resources
+* Defines named pipelines through which requests can pass through
+---
+#### Controllers
+* Provide functions, called actions, to handle requests
+* Actions
+  - Prepare data and pass into views
+  - Invoke rendering via views
+  - Perform redirects
+---
+#### Views
+* Render templates
+* Act as presentation layer
+* Defined helper functions, available in templates, to decorate data for presentation
+---
+#### Templates
+* Just like any other templates in other frameworks
+* Are actually compiled functions
+---
+#### Channels
+* Manage websockets
+* Analogous to controllers but allow bi-directional communication with persistent connections
+* Ships with a javascript client for easy integration in templates or JS libraries like React.
+---
+#### PubSub
+* Underlies the channel layer and allows clients to subscribe to topics
+* Abstracts the underlying pubsub adapter for third-party pubsub integration
+  - Uses a `:pg2` and `:ets` implementation
