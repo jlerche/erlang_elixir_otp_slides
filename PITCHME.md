@@ -248,6 +248,17 @@ defmodule RecursionTCO do
 end
 ```
 ---
+#### The pipe operator `|>`
+Takes output of previous expression, and uses it as input in the first argument of the supplied function
+
+```elixir
+iex> 1..3 |> Enum.map(&to_string/1) |> Enum.each(&IO.puts/1)
+1
+2
+3
+:ok
+```
+---
 #### Processes
 ```elixir
 iex> pid = spawn fn -> 1 + 1 end
@@ -561,3 +572,81 @@ Phoenix
 * Underlies the channel layer and allows clients to subscribe to topics
 * Abstracts the underlying pubsub adapter for third-party pubsub integration
   - Uses a `:pg2` and `:ets` implementation
+---
+# Distribution
+---
+Erlang's big advantage is that it automates away the tedium of writing distributed applications
+---
+* Connecting an erlang node to another automatically clusters them with all the other connected nodes
+* Erlang abstracts RPCs between nodes
+  - To spawn a process on another node just use functions from the `Node` library
+  - Nodes are atoms
+  - `iex> Node.spawn(:"foo@hostname", fn x -> do_the_thing(x))`
+  - Returns a pid
+* Erlang `:rpc` library for more functionality
+---
+#### Handling failures
+* A configuration file can be used to specify on which node an application is to run on
+* Can list other nodes for the application to launch the application if the master node goes down
+* Can specify priority orders within nodes so a higher priority node that comes back takes over control
+---
+#### Example
+* master, slave1, slave2 running `myapp`
+* master goes down, slave1 takes over
+* slave1 goes down, slave2 takes over
+* if slave1 comes back up, slave2 keeps running `myapp`
+* master comes back up and takes over `myapp`
+---
+#### `:pg2`
+
+`:pg2` allows us to create, join, and query groups of processes across a cluster
+---
+* Can acess a group of processes by common name
+* Send a message to one, some, or all group members
+* If a member terminates, it is automatically removed from the group
+----
+How does Phoenix Channels use this do distributed PubSub?
+---
+Simple, have a PubSub server per node join a pg2 group
+---
+How does pg2 work?
+---
+#### `pg2` toolbox
+* GenServer
+* ETS
+* `:global`
+* Node and Process Monitoring
+---
+#### `pg2` GenServer
+* Each node has a `pg2` server process running
+* Central interaction point for `pg2` between each node
+---
+#### `pg2` ETS
+* Store process groups and their memberships
+* Reads can happen from any process, but writes are serialized through `pg2` genserver
+---
+#### `:global`
+* `:global` provides a function `trans/2`
+  - Acquires a lock across entire cluster using any term as key
+  - Then runs a provided function
+* Combining `trans/2` with genserver `multi_call/3` allows us to call all processes registered with a given name within the cluster
+  - `pg2` ensures that only one process across the entire cluster can modify any given group at a time
+---
+#### Node and Process monitoring
+* `:net_kernal.monitor_nodes/1` allows calling process to register for notifications about nodes connecting and disconnecting from the cluster
+* When the `pg2` server receives a notification that a new node has connected, it merges the groups and memberships between itself and the new member's pg2 server.
+* `pg2` registers a monitor for each process which joins a group
+  - If this monitor reports that the process is down, process membership is removed from the local data
+---
+#### Observations
+* `pg2` uses global locks
+  - Modifying group memberships is a globally locked operation
+  - Requires multiple network round-trips
+  - Can lead to lock overhead in groups with large memberships
+* `pg2` is a distributed database
+---
+#### `pg2` CAP theorem
+* `pg2` is AP: available and partition-tolerant
+* Cluster partitions will only see groups and memberships from nodes that are reachable
+* It is eventually consistent, it automatically heals from partitions
+* Easy to distribute thanks to monitors, and conflicts are easily resolved by merging
