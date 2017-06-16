@@ -650,3 +650,9 @@ How does pg2 work?
 * Cluster partitions will only see groups and memberships from nodes that are reachable
 * It is eventually consistent, it automatically heals from partitions
 * Easy to distribute thanks to monitors, and conflicts are easily resolved by merging
+---
+#### Websocket performance
+* In 2012 WhatsApp published ~2million tcp connections on 20 core 100gb servers
+* In 2015 Elixir/Phoenix team published ~2million websocket connections using Channels using 40 (logical core?) 84gb memory
+* 2016 thanks to improvements in Erlang/OTP 18, 2.3 million websocket connections on 20 logical core 64gb Digital Ocean droplet using Docker.
+* ~1750ws/gb/core
