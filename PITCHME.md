@@ -604,7 +604,7 @@ Erlang's big advantage is that it automates away the tedium of writing distribut
 * Can acess a group of processes by common name
 * Send a message to one, some, or all group members
 * If a member terminates, it is automatically removed from the group
-----
+---
 How does Phoenix Channels use this do distributed PubSub?
 ---
 Simple, have a PubSub server per node join a pg2 group
@@ -635,8 +635,7 @@ How does pg2 work?
 #### Node and Process monitoring
 * `:net_kernal.monitor_nodes/1` allows calling process to register for notifications about nodes connecting and disconnecting from the cluster
 * When the `pg2` server receives a notification that a new node has connected, it merges the groups and memberships between itself and the new member's pg2 server.
-* `pg2` registers a monitor for each process which joins a group
-  - If this monitor reports that the process is down, process membership is removed from the local data
+* `pg2` registers a monitor for each process which joins a group, if monitor reports that the process is down, process membership is removed from the local data
 ---
 #### Observations
 * `pg2` uses global locks
