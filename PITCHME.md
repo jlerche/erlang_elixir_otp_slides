@@ -300,6 +300,8 @@ iex> receive do
 "Got hello from PID<0.48.0>"
 ```
 ---
+<img src="./memes/mapr.png" style="width: 450px;"/>
+---
 #### Parallel Map - Hello World of Erlang
 ```elixir
 defmodule Parallel do
