@@ -680,3 +680,11 @@ How does pg2 work?
 * In 2015 Elixir/Phoenix team published ~2million websocket connections using Channels using 40 (logical core?) 84gb memory
 * 2016 thanks to improvements in Erlang/OTP 18, 2.3 million websocket connections on 20 logical core 64gb Digital Ocean droplet using Docker.
 * ~1750ws/gb/core
+---
+#### Further resources
+* https://www.erlang.org/
+* https://elixir-lang.org/
+* Programming Elixir 1.3
+* Elixir in Action
+* The Little Elixir and OTP Guidebook
+* Programming Phoenix
